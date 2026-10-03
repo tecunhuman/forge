@@ -26,11 +26,11 @@ make server
 
 3. Open `http://$FORGE_HOST:3000` and create the admin account.
 
-4. Create a runner token in Site administration -> Actions -> Runners and register the runner:
+4. Register the runner and start everything:
 
 ```bash
 make runner-config
-make register TOKEN=<token>
+make register
 make up
 ```
 
