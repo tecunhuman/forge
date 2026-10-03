@@ -18,7 +18,7 @@ RUNNER = docker run --rm --user 1001:1001 -v $(FORGE_DATA)/runner:/data -w /data
 
 runner-config:
 	$(RUNNER) sh -c 'forgejo-runner generate-config | \
-		sed "s|^  network: \"\"$$|  network: host|" > runner-config.yml'
+		sed -e "s|^  network: \"\"$$|  network: host|" -e "s|^  capacity: 1$$|  capacity: $(RUNNER_CAPACITY)|" > runner-config.yml'
 
 register:
 	$(RUNNER) forgejo-runner register --no-interactive \
