@@ -1,0 +1,42 @@
+services:
+  server:
+    image: codeberg.org/forgejo/forgejo:15
+    container_name: forgejo
+    restart: always
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+      - FORGEJO__server__ROOT_URL=http://${FORGE_HOST}:3000/
+      - FORGEJO__actions__ENABLED=true
+    networks: [forgejo]
+    ports:
+      - "3000:3000"
+      - "2222:22"
+    volumes:
+      - ${FORGE_DATA}/forgejo-data:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+
+  docker-in-docker:
+    image: docker:dind
+    container_name: docker_dind
+    privileged: true
+    command: ['dockerd', '-H', 'tcp://0.0.0.0:2375', '--tls=false', '--insecure-registry=${FORGE_HOST}:3000']
+    restart: unless-stopped
+    networks: [forgejo]
+
+  runner:
+    image: data.forgejo.org/forgejo/runner:13
+    container_name: runner
+    depends_on: [docker-in-docker, server]
+    environment:
+      DOCKER_HOST: tcp://docker-in-docker:2375
+    user: 1001:1001
+    volumes:
+      - ${FORGE_DATA}/runner:/data
+    restart: unless-stopped
+    command: forgejo-runner daemon --config runner-config.yml
+    networks: [forgejo]
+
+networks:
+  forgejo: {}
