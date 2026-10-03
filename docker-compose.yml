@@ -8,7 +8,9 @@ services:
       - USER_GID=1000
       - FORGEJO__server__ROOT_URL=http://${FORGE_HOST}:3000/
       - FORGEJO__actions__ENABLED=true
-    networks: [forgejo]
+    networks:
+      forgejo:
+        aliases: [ "${FORGE_HOST}" ]
     ports:
       - "3000:3000"
       - "2222:22"

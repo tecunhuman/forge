@@ -17,6 +17,12 @@ How to Setup
 cp .env.example .env
 ```
 
+Add the host name to `/etc/hosts`:
+
+```bash
+127.0.0.1  forge.lan
+```
+
 2. Create the data folders and start the server:
 
 ```bash
@@ -24,7 +30,7 @@ make init
 make server
 ```
 
-3. Open `http://$FORGE_HOST:3000` and create the admin account.
+3. Open `http://forge.lan:3000` and create the admin account.
 
 4. Register the runner and start everything:
 
