@@ -12,8 +12,8 @@ services:
       forgejo:
         aliases: [ "${FORGE_HOST}" ]
     ports:
-      - "3000:3000"
-      - "2222:22"
+      - "127.0.0.1:3000:3000"
+      - "127.0.0.1:2222:22"
     volumes:
       - ${FORGE_DATA}/forgejo-data:/data
       - /etc/timezone:/etc/timezone:ro
