@@ -1,5 +1,7 @@
 -include .env
 
+.PHONY: up down init server runner-config register backup logs
+
 up:
 	docker compose up -d
 

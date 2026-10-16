@@ -40,6 +40,34 @@ make register
 make up
 ```
 
+Command-line provisioning
+-------------------------
+
+Create an API token for the Forgejo user that will own and administer the new resources. Export it for the current
+shell session so it is not stored on disk:
+
+```bash
+export TOKEN=$(./forge-api.py token admin)
+```
+
+Create an organization and repositories from the command line:
+
+```bash
+./forge-api.py org create tecunhuman --description "Tecunhuman projects"
+./forge-api.py repo create tecunhuman/new-project --description "A new project"
+./forge-api.py repo create tecunhuman/private-project --private
+```
+
+Use just a repository name, without `OWNER/`, to create it under the user associated with `TOKEN`.
+Repositories are empty by default; pass `--init` to initialize one with its default branch. Run `./forge-api.py --help`
+for all options.
+
+For a single operation, the token can be scoped to only that command:
+
+```bash
+TOKEN=$(./forge-api.py token admin) ./forge-api.py repo create tecunhuman/new-project
+```
+
 Backups
 -------
 
@@ -50,5 +78,5 @@ make backup
 Cron example:
 
 ```bash
-0 3 * * * $HOME/tecunhuman/forge/backup.sh
+0 3 * * * $HOME/workspace/forge/backup.sh
 ```
